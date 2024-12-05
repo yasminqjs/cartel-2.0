@@ -3,16 +3,17 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#define ANSI_COLOR_1      "\x1b[91m"//vermelho
-#define ANSI_COLOR_2      "\x1b[92m"//verde
-#define ANSI_COLOR_3      "\x1b[93m"//amarelo
-#define ANSI_COLOR_4      "\x1b[94m"//azul
-#define ANSI_COLOR_5      "\x1b[95m"//roxo
-#define ANSI_COLOR_6      "\x1b[96m"//azul claro
-#define ANSI_COLOR_7      "\x1b[97m"//branco
-#define MAX_MENSAGEM 512 // Tamanho máximo da mensagem
 
-void apagarTela(){
+#define ANSI_COLOR_1      "\x1b[91m" // vermelho
+#define ANSI_COLOR_2      "\x1b[92m" // verde
+#define ANSI_COLOR_3      "\x1b[93m" // amarelo
+#define ANSI_COLOR_4      "\x1b[94m" // azul
+#define ANSI_COLOR_5      "\x1b[95m" // roxo
+#define ANSI_COLOR_6      "\x1b[96m" // azul claro
+#define ANSI_COLOR_7      "\x1b[97m" // branco
+#define MAX_MENSAGEM 512             // Tamanho máximo da mensagem
+
+void apagarTela() {
     #ifdef _WIN32
         system("cls");
     #else
@@ -20,10 +21,71 @@ void apagarTela(){
     #endif
 }
 
-typedef struct{
+// Estrutura para previsão do tempo
+typedef struct {
     char tempo[50];
 } tp_tempo;
 
+// Função para salvar a previsão no arquivo
+void salvarPrevisao(const char *cidade, int dia, int mes, const char *clima) {
+    FILE *arquivo = fopen("previsoes.txt", "a"); // Abre o arquivo em modo de adição
+    if (arquivo == NULL) {
+        printf("\nErro ao abrir o arquivo para salvar a previsão.\n");
+        return;
+    }
+
+    fprintf(arquivo, "Cidade: %s | Data: %02d/%02d | Previsão: %s\n", cidade, dia, mes, clima);
+    fclose(arquivo); // Fecha o arquivo após a gravação
+    printf("\nPrevisão salva no arquivo 'previsoes.txt'.\n");
+}
+
+// Função para verificar a previsão do tempo
+void verificarTempo() {
+    char cidade[50];
+    tp_tempo tempo[4] = {
+        {"Chuva moderada"},
+        {"Ensolarado"},
+        {"Nublado"},
+        {"Instável"}
+    };
+    int dia, mes;
+    char continuar = 's'; // Variável para controlar o loop
+
+    // Enquanto o usuário desejar continuar, a previsão será gerada novamente
+    while (continuar == 's' || continuar == 'S') {
+        // Solicita a entrada do usuário
+        printf("Digite o nome da cidade: ");
+        scanf(" %[^\n]s", cidade);
+        printf("\nDigite o dia: ");
+        scanf(" %d", &dia);
+        printf("\nDigite o mes: ");
+        scanf(" %d", &mes);
+
+        // Verifica a validade da data
+        if (mes < 1 || dia < 1 || mes > 12 || dia > 31) {
+            printf("\nData inválida. Tente novamente.\n");
+            continue; // Recomeça o loop
+        }
+
+        // Define a semente com base no dia e no mês
+        srand(dia * mes);
+        printf("\nPrevisão do tempo para %s em %02d/%02d: ", cidade, dia, mes);
+        int clima = rand() % 4; // Gera um índice aleatório entre 0 e 3
+        printf("%s\n", tempo[clima].tempo);
+
+        // Salva a previsão no arquivo
+        salvarPrevisao(cidade, dia, mes, tempo[clima].tempo);
+
+        // Pergunta se o usuário deseja continuar
+        printf("\nDeseja verificar outra previsão? (s/n): ");
+        scanf(" %c", &continuar);
+    }
+
+    printf("\nVoltando ao menu principal...\n");
+}
+
+
+// Função para enviar mensagens de apoio
 void enviar_mensagens_de_apoio() {
     const char* categorias[] = {"crianca", "jovem", "adulto"}; // Categorias disponíveis
     char categoria[20];
@@ -67,105 +129,86 @@ void enviar_mensagens_de_apoio() {
     printf("Obrigado por suas mensagens de apoio!\n");
 }
 
-
-void verificarTempo(){
-    char cidade[50];
-    tp_tempo tempo[4] = {"Chuva moderada","Ensolarado","Nublado","Instavel"};
-    int dia, mes;
-    printf("Digite o nome da cidade: ");
-    scanf(" %[^\n]s", cidade);
-    printf("\nDigite o dia: ");
-    scanf(" %d", &dia);
-    printf("\nDigite o mes: ");
-    scanf(" %d", &mes);
-    if(mes<1 || dia<1 || mes>12 || dia>31){
-        printf("\nData invalida\n");
-        return verificarTempo();
-    } else {
-        srand(dia*mes);
-        printf("\nPrevisao do tempo para %s em %d/%d: ", cidade, dia, mes);
-        int clima = rand()%4;
-        printf(" %s", tempo[clima].tempo);
-    }
-}
-
-
+// Função do menu principal
 int escolha();
-int menu(){
-apagarTela();
+void menu() {
+    apagarTela();
 
-printf(ANSI_COLOR_6);
-printf("---------------------------------------\n");
-printf("Escolha entre as seguintes opcoes:\n\n");
-printf("1) Verificar a previsao do tempo\n");
-printf("2) Doar para vitimas da chuva\n");
-printf("3) Enviar mensagens de apoio\n");
-printf("4) Sair\n");
-printf("---------------------------------------\n\n");
-printf(ANSI_COLOR_7);
+    printf(ANSI_COLOR_6);
+    printf("---------------------------------------\n");
+    printf("Escolha entre as seguintes opcoes:\n\n");
+    printf("1) Verificar a previsao do tempo\n");
+    printf("2) Doar para vitimas da chuva\n");
+    printf("3) Enviar mensagens de apoio\n");
+    printf("4) Sair\n");
+    printf("---------------------------------------\n\n");
+    printf(ANSI_COLOR_7);
 
-escolha();
+    escolha();
 }
 
-int escolha(){
-int num;
-char letra;
-scanf("%d", &num);
+// Função para processar a escolha do menu
+int escolha() {
+    int num;
+    char letra;
+    scanf(" %d", &num);
 
-apagarTela();
-switch(num){
-    case 1:
-        verificarTempo();
-        
-        printf("\n\nVoce deseja voltar para a tela inicial? (s/n)\n");
-        scanf(" %c", &letra);
+    apagarTela();
+    switch(num) {
+        case 1:
+            verificarTempo();
+            menu();
 
-        if(letra == 's') return menu();
-        if(letra == 'n') return 0;
-        break;
+        case 2:
+            printf("As enchentes no Rio Grande do Sul deixaram muitas familias desabrigadas e em situacao de necessidade.\n");
+             sleep(2);
+            printf("Voce pode ajudar doando alimentos, roupas, cobertores, itens de higiene ou fazendo contribuicoes financeiras para instituicoes confiaveis que estao auxiliando as vitimas.\n");
+            sleep(2);
+            printf("Toda ajuda e importante para quem perdeu tudo e precisa recomeçar!!\n");
+            sleep(3);
+            apagarTela();
+            menu();
+            
 
-    case 2:
-        break;
+        case 3:
+            enviar_mensagens_de_apoio();
 
-    case 3:
-        enviar_mensagens_de_apoio();
-
-        printf("\n\nVoce deseja voltar para a tela inicial? (s/n)\n");
-        scanf(" %c", &letra);
-
-        if(letra == 's') return menu();
-        if(letra == 'n') return 0;
-        break;
-
-    case 4:  
-        printf("Voce realmente deseja finalizar o programa? (s/n)\n");
-        scanf(" %c", &letra);
-        
-        if(letra == 's') return 0;
-        if(letra == 'n') return menu();
-        else { 
-            printf("Opcao invalida. Tente novamente.\n");
-            return escolha();
-        }
-        break;
-
-    default:
-        printf("Numero invalido. Tente novamente.\n");
-            return escolha();
+           menu();
+            
             break;
-} }
 
+        case 4:
+            printf("Voce realmente deseja finalizar o programa? (s/n)\n");
+            scanf(" %c", &letra);
+            
+            if(letra == 's') return 0; // Sai do programa
+            else if(letra == 'n') menu();
+            else { 
+                printf("Opcao invalida. Tente novamente.\n");
+                escolha();
+            }
+            break;
 
-int main(){
-apagarTela();
+        default:
+            printf("Numero invalido. Tente novamente.\n");
+            escolha();
+            break;
+    }
 
-printf("Bem vindo(a) ao ");
-printf(ANSI_COLOR_4"MoniTorando!\n");
-printf(ANSI_COLOR_7"Seu algoritmo de monitoramento de chuvas no Rio Grande do Sul.\n");
+    return 0; // Finaliza a função escolha corretamente
+}
 
-sleep(8);
+// Função principal
+int main() {
+    apagarTela();
 
-menu();
+    printf("Bem vindo(a) ao ");
+    printf(ANSI_COLOR_4"MoniTorando!\n");
+    printf(ANSI_COLOR_7"Seu algoritmo de monitoramento de chuvas no Rio Grande do Sul.\n");
 
-return 0;
+    sleep(3); // Diminui o tempo de espera para melhorar a experiência do usuário
+
+    menu();
+
+    return 0;
 }
