@@ -202,11 +202,18 @@ int escolha() {
 int main() {
     apagarTela();
 
-    printf("Bem vindo(a) ao ");
-    printf(ANSI_COLOR_4"MoniTorando!\n");
-    printf(ANSI_COLOR_7"Seu algoritmo de monitoramento de chuvas no Rio Grande do Sul.\n");
+    
+printf(ANSI_COLOR_2"*  ##   ##                      ##     ######                                          ###                     ######    #####  *\n");
+printf(ANSI_COLOR_2"*  ### ###                             # ## #                                           ##                      ##  ##  ##   ## *\n");
+printf(ANSI_COLOR_2"*  #######   ####    #####     ###       ##      ####    ######    ####    #####        ##    ####              ##  ##  #       *\n");
+printf(ANSI_COLOR_1"*  #######  ##  ##   ##  ##     ##       ##     ##  ##    ##  ##      ##   ##  ##    #####   ##  ##             #####    #####  *\n");
+printf(ANSI_COLOR_1"*  ## # ##  ##  ##   ##  ##     ##       ##     ##  ##    ##       #####   ##  ##   ##  ##   ##  ##             ## ##        ## *\n");
+printf(ANSI_COLOR_3"*  ##   ##  ##  ##   ##  ##     ##       ##     ##  ##    ##      ##  ##   ##  ##   ##  ##   ##  ##             ##  ##  ##   ## *\n");
+printf(ANSI_COLOR_3"*  ##   ##   ####    ##  ##    ####     ####     ####    ####      #####   ##  ##    ######   ####             #### ##   #####  *\n");
+printf("\n");
+    printf(ANSI_COLOR_7"\nSeu algoritmo de monitoramento de chuvas no Rio Grande do Sul.\n");
 
-    sleep(3); // Diminui o tempo de espera para melhorar a experiência do usuário
+    sleep(5); // Diminui o tempo de espera para melhorar a experiência do usuário
 
     menu();
 
