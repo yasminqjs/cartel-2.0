@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <locale.h> //necessário para usar setlocale
+#include "doarparavitimas.h"
 
 #define ANSI_COLOR_1      "\x1b[91m" // vermelho
 #define ANSI_COLOR_2      "\x1b[92m" // verde
@@ -166,6 +168,7 @@ int escolha() {
             sleep(2);
             printf("Toda ajuda e importante para quem perdeu tudo e precisa recomeçar!!\n");
             sleep(3);
+            doar_para_vitimas();
             apagarTela();
             menu();
             
@@ -200,6 +203,7 @@ int escolha() {
 
 // Função principal
 int main() {
+    setlocale(LC_ALL,"");
     apagarTela();
 
     
