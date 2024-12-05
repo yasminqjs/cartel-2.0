@@ -8,7 +8,7 @@
 void digitePraSair(){
     int lixo;
     printf("\ndigite qualquer valor para retornar.\n");
-    scanf("%c", lixo);
+    scanf(" %c", &lixo);
 }
 
 void doar_para_vitimas(){
@@ -22,7 +22,7 @@ void doar_para_vitimas(){
     printf("2 - Outros (alimentos, roupas, cobertores, etc)\n");
 
     while(1){ //funcao continua rodando ate uma opcao ser aceita, caso a pessoa digite uma opcao invalida ele escaneara novamente
-        scanf("%d", &opcao);
+        scanf(" %d", &opcao);
 
         if(opcao == 1){
             printf("A sua doação é nacional ou internacional?\n");
@@ -31,7 +31,7 @@ void doar_para_vitimas(){
 
                 while(1){ //funcao continua rodando ate uma opcao ser aceita, caso a pessoa digite uma opcao invalida ele escaneara novamente
                     char opcao2[50];
-                    scanf("%s", &opcao2);
+                    scanf(" %s", opcao2);
 
                     if(!strcmp(opcao2, "nacional") || !strcmp(opcao2, "Nacional") || !strcmp(opcao2, "NACIONAL")){
                         printf("Pix: CNPJ: 92.958.800/0001-38\n");
@@ -231,8 +231,8 @@ void doar_para_vitimas(){
         }else{ printf("Opcão inválida, digite novamente: ");
         
         }
-
     }
+    
 }
 
 #endif

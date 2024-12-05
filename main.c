@@ -194,7 +194,7 @@ int escolha() {
 
         default:
             printf("Numero invalido. Tente novamente.\n");
-            escolha();
+            menu();
             break;
     }
 
