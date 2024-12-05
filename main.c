@@ -206,7 +206,7 @@ printf(ANSI_COLOR_3"*  ##   ##   ####    ##  ##    ####     ####     ####    ###
 printf("\n");
     printf(ANSI_COLOR_7"\nSeu algoritmo de monitoramento de chuvas no Rio Grande do Sul.\n");
 
-    sleep(5); // Diminui o tempo de espera para melhorar a experiência do usuário
+    sleep(8); // Diminui o tempo de espera para melhorar a experiência do usuário
 
     menu();
 
