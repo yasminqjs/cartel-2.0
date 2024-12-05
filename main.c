@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <locale.h> //necessário para usar setlocale
-#include "doarparavitimas.h"
+#include "DOARPARAVITIMAS.H"
 
 #define ANSI_COLOR_1      "\x1b[91m" // vermelho
 #define ANSI_COLOR_2      "\x1b[92m" // verde
@@ -132,74 +132,63 @@ void enviar_mensagens_de_apoio() {
 }
 
 // Função do menu principal
-int escolha();
+
 void menu() {
-    apagarTela();
-
-    printf(ANSI_COLOR_6);
-    printf("---------------------------------------\n");
-    printf("Escolha entre as seguintes opcoes:\n\n");
-    printf("1) Verificar a previsao do tempo\n");
-    printf("2) Doar para vitimas da chuva\n");
-    printf("3) Enviar mensagens de apoio\n");
-    printf("4) Sair\n");
-    printf("---------------------------------------\n\n");
-    printf(ANSI_COLOR_7);
-
-    escolha();
-}
-
-// Função para processar a escolha do menu
-int escolha() {
     int num;
     char letra;
-    scanf(" %d", &num);
 
-    apagarTela();
-    switch(num) {
-        case 1:
-            verificarTempo();
-            menu();
+    do {
+        apagarTela();
 
-        case 2:
-            printf("As enchentes no Rio Grande do Sul deixaram muitas familias desabrigadas e em situacao de necessidade.\n");
-             sleep(2);
-            printf("Voce pode ajudar doando alimentos, roupas, cobertores, itens de higiene ou fazendo contribuicoes financeiras para instituicoes confiaveis que estao auxiliando as vitimas.\n");
-            sleep(2);
-            printf("Toda ajuda e importante para quem perdeu tudo e precisa recomeçar!!\n");
-            sleep(3);
-            doar_para_vitimas();
-            apagarTela();
-            menu();
-            
+        printf(ANSI_COLOR_6);
+        printf("---------------------------------------\n");
+        printf("Escolha entre as seguintes opcoes:\n\n");
+        printf("1) Verificar a previsao do tempo\n");
+        printf("2) Doar para vitimas da chuva\n");
+        printf("3) Enviar mensagens de apoio\n");
+        printf("4) Sair\n");
+        printf("---------------------------------------\n\n");
+        printf(ANSI_COLOR_7);
 
-        case 3:
-            enviar_mensagens_de_apoio();
+        scanf(" %d", &num);
 
-           menu();
-            
-            break;
+        apagarTela(); // Limpa a tela antes de executar a opção escolhida
 
-        case 4:
-            printf("Voce realmente deseja finalizar o programa? (s/n)\n");
-            scanf(" %c", &letra);
-            
-            if(letra == 's') return 0; // Sai do programa
-            else if(letra == 'n') menu();
-            else { 
-                printf("Opcao invalida. Tente novamente.\n");
-                escolha();
-            }
-            break;
+        switch (num) {
+            case 1:
+                verificarTempo();
+                break;
 
-        default:
-            printf("Numero invalido. Tente novamente.\n");
-            menu();
-            break;
-    }
+            case 2:
+                doar_para_vitimas();
+                break;
 
-    return 0; // Finaliza a função escolha corretamente
+            case 3:
+                enviar_mensagens_de_apoio();
+                break;
+
+            case 4:
+                printf("Voce realmente deseja finalizar o programa? (s/n): ");
+                scanf(" %c", &letra);
+                if (letra == 's' || letra == 'S') {
+                    printf("Finalizando o programa...\n");
+                    return; 
+                }
+                break;
+
+            default:
+                printf("Numero invalido. Tente novamente.\n");
+                break;
+        }
+
+
+
+    } while (1); // Loop infinito até o usuário escolher sair
 }
+
+
+
+
 
 // Função principal
 int main() {
